@@ -231,6 +231,65 @@ public class UserUtils {
                 });
     }
 
+    public static void sendChargeCompleteTORider(Context context, View view, String key) {
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        IFCMService ifcmService = RetrofitFCMClient.getInstance().create(IFCMService.class);
+
+        FirebaseDatabase
+                .getInstance()
+                .getReference(Common.TOKEN_REFERENCE)
+                .child(key)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists())
+                        {
+                            TokenModel tokenModel = dataSnapshot.getValue(TokenModel.class);
+
+                            Map<String,String> notificationData = new HashMap<>();
+                            notificationData.put(Common.NOTI_TITLE,context.getString(R.string.charge_complete));
+                            notificationData.put(Common.NOTI_CONTENT,context.getString(R.string.your_device_charge_complete));
+                            notificationData.put(Common.DRIVER_KEY,FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            notificationData.put(Common.RIDER_KEY,key);
+
+
+
+
+                            FCMSendData fcmSendData = new FCMSendData(tokenModel.getToken(),notificationData);
+
+                            compositeDisposable.add(ifcmService.sendNotification(fcmSendData)
+                                    .subscribeOn(Schedulers.newThread())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(fcmResponse -> {
+                                        if(fcmResponse.getSucccess() == 0)
+                                        {
+                                            compositeDisposable.clear();
+                                            Snackbar.make(view,context.getString(R.string.accept_failed),Snackbar.LENGTH_LONG).show();
+                                        }
+                                        else
+                                            EventBus.getDefault().postSticky(new NotifyToRiderEvent());
+
+
+                                    }, throwable -> {
+                                        compositeDisposable.clear();
+                                        Snackbar.make(view,throwable.getMessage(),Snackbar.LENGTH_LONG).show();
+                                    }));
+                        }
+                        else
+                        {
+                            compositeDisposable.clear();
+                            Snackbar.make(view,context.getString(R.string.token_not_found),Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        compositeDisposable.clear();
+                        Snackbar.make(view,databaseError.getMessage(),Snackbar.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     public static void sendDeclineAndRemoveTripRequest(View view, Context context, String key, String tripNumberId) {
         CompositeDisposable compositeDisposable = new CompositeDisposable();
         IFCMService ifcmService = RetrofitFCMClient.getInstance().create(IFCMService.class);

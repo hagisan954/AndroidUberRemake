@@ -26,11 +26,14 @@
     <string name="start_uber">Start Uber</string>
     <string name="rider_not_found">Cannot find ride with key</string>
     <string name="accept_failed">Accept Failed</string>
-    <string name="driver_arrived">Driver arrived</string>
-    <string name="your_driver_arrived">Your driver arrived</string>
+    <string name="driver_arrived">Drone arrived</string>
+    <string name="your_driver_arrived">ドローンが到着しました！充電を開始します</string>
     <string name="time_over">Time over</string>
     <string name="complete_trip">Complete Trip</string>
     <string name="complete_trip_failed">Complete Trip message send failed</string>
     <string name="complete_trip_success">Thank you!You have complete trip</string>
     <string name="service_unavailable_here">Service unavailable here</string>
+    <string name="charge_complete_message">充電完了</string>
+    <string name="charge_complete">Charge Complete!</string>
+    <string name="your_device_charge_complete">充電完了！ドローンは帰ります</string>
 </resources>

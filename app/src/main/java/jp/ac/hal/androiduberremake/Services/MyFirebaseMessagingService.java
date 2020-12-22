@@ -23,6 +23,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             UserUtils.updateToken(this,s);
     }
 
+
+    //ここで受け取るかも
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -146,6 +147,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     TextView txt_notify_rider;
     @BindView(R.id.progress_notify)
     ProgressBar progress_notify;
+
+    //充電完了のお知らせ
+    @BindView(R.id.charge_complete)
+    Button charge_complete;
 
     private String tripNumberId = "";
     private boolean isTripStart = false, onlineSystemAlreadyRegister = false;
@@ -342,6 +347,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             });
                 });
 
+    }
+
+    @OnClick(R.id.charge_complete)
+    void onChargeCompleteClick() {
+        UserUtils.sendChargeCompleteTORider(getContext(), root_layout, driverRequestRecieved.getKey());
     }
 
     private void drawPathFromCurrentLocation(String destinationLocation) {

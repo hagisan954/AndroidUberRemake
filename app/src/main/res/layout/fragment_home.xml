@@ -12,7 +12,14 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
+        tools:context=".MapsActivity" >
+        <Button
+            android:id="@+id/charge_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/charge_complete_message"
+            />
+    </fragment>
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip_decline"
